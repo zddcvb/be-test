@@ -23,14 +23,14 @@
 
 ```
 #Dynamic exec according to port
-java -jar ping.jar --server.port=8081
-java -jar ping.jar --server.port=8082
-java -jar ping.jar --server.port=8083
+nohup java -jar ping.jar --server.port=8081 > output_ping_8081.log &
+nohup java -jar ping.jar --server.port=8082 > output_ping_8082.log &
+nohup java -jar ping.jar --server.port=8083 > output_ping_8083.log &
 ```
 
 ##### 3.2 Pong Service
 
 ```
-Java -jar ping.jar
+nohup Java -jar ping.jar > output_pong_8080.log &
 ```
 
