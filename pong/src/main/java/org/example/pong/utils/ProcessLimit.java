@@ -14,14 +14,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ProcessLimit {
     private String lockFile;
     private static final int MAX_PROCESS = 2;
-    private final AtomicInteger requestCount;
+    public final AtomicInteger saveRequestCount;
     public final ConcurrentHashMap<Long, Integer> processMap = new ConcurrentHashMap<>();
     private static final Long CURRENT_TIME = System.currentTimeMillis();
     private static Logger LOGGER = Loggers.getLogger(ProcessLimit.class);
+    public final AtomicInteger requestCount = new AtomicInteger();
 
     public ProcessLimit() {
 
-        requestCount = new AtomicInteger(0);
+        saveRequestCount = new AtomicInteger(0);
     }
 
     public synchronized void process(String lockFile) {
@@ -37,14 +38,16 @@ public class ProcessLimit {
                 //获取锁成功
                 if (requestCount.get() <= MAX_PROCESS) {
                     LOGGER.info("============Not exceeding the maximum number of processes");
-                    requestCount.incrementAndGet();
+                    saveRequestCount.incrementAndGet();
+                    processMap.put(CURRENT_TIME, saveRequestCount.get());
                 } else {
                     LOGGER.info("============The maximum number of processes has been exceeded");
-                    requestCount.decrementAndGet();
-                    LOGGER.info("");
-                    System.exit(0);
+//                    requestCount.decrementAndGet();
+//                    System.exit(0);
+//                    return;
                 }
-                processMap.put(CURRENT_TIME, requestCount.get());
+                requestCount.incrementAndGet();
+//                processMap.put(CURRENT_TIME, requestCount.get());
                 fileLock.release();
                 fileLock.close();
                 randomAccessFile.close();
