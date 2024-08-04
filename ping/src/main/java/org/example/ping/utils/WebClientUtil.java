@@ -12,8 +12,11 @@ import reactor.util.Loggers;
 @Component
 public class WebClientUtil {
     private static Logger LOGGER = Loggers.getLogger(WebClientUtil.class);
-    @Autowired
-    private WebClient webClient;
+    private final WebClient webClient;
+
+    public WebClientUtil(WebClient webClient) {
+        this.webClient = webClient;
+    }
 
     public Mono<PingResponseVO> requestPongService() {
         try {

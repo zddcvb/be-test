@@ -12,6 +12,9 @@ public class PingScheduleJob {
     @Autowired
     private WebClientUtil webClientUtil;
 
+    public PingScheduleJob(WebClientUtil webClientUtil) {
+        this.webClientUtil = webClientUtil;
+    }
 
     @Scheduled(cron = "0/1 * * * * ?")
     public void pingPong() {

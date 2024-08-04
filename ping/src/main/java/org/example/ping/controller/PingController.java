@@ -3,12 +3,12 @@ package org.example.ping.controller;
 import org.example.ping.entry.PingResponseVO;
 import org.example.ping.service.PingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-@RestController
+@Controller
 @RequestMapping("/ping")
 public class PingController {
 

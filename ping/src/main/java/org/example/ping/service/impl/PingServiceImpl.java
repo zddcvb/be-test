@@ -24,8 +24,7 @@ public class PingServiceImpl implements PingService {
         try {
             return webClientUtil.requestPongService();
         } catch (Exception e) {
-            LOGGER.info("请求失败");
+            throw new RuntimeException("REQUEST ERROR");
         }
-        return Mono.empty();
     }
 }

@@ -2,7 +2,6 @@ package org.example.pong.service.impl;
 
 import org.example.pong.entry.vo.PongResponseVO;
 import org.example.pong.service.PongService;
-import org.example.pong.utils.ProcessLimit;
 import org.example.pong.utils.RateLimit;
 import org.example.pong.utils.SystemUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,21 +16,18 @@ import java.io.File;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class PongServiceImpl implements PongService {
     private static Logger LOGGER = Loggers.getLogger(PongServiceImpl.class);
-    private RateLimit rateLimit = new RateLimit(1);
+    RateLimit rateLimit = new RateLimit(1);
     @Value("${linux.lock.file}")
     String linuxLockFile;
     @Value("${windows.lock.file}")
     String windowsLockFile;
-    ProcessLimit processLimit = new ProcessLimit();
     public AtomicInteger saveRequestCount = new AtomicInteger(0);
     private static final int MAX_PROCESS = 2;
-     Object o = new Object();
 
     @Override
     public synchronized Mono<PongResponseVO> handlerRequest(String param) {

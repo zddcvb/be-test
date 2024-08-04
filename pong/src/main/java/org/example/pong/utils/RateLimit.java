@@ -14,6 +14,14 @@ public class RateLimit {
         limitCount = new AtomicInteger(0);
     }
 
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
     /**
      * 添加
      *

@@ -9,24 +9,25 @@ import reactor.core.publisher.Mono
 import spock.lang.Specification
 
 class PingServiceImplTest extends Specification {
-    @InjectMocks
-    private PingServiceImpl pingService;
-    @Mock
-    private WebClientUtil webClientUtil;
 
     void setup() {
+
     }
+
 
     def "invoke pong normal"() {
         given:
+        def webClientUtil = Mock(WebClientUtil)
+        def pingService = new PingServiceImpl(webClientUtil)
         def param = "hello"
         def vo = new PingResponseVO();
         vo.setData("world")
         vo.setMsg("success")
         vo.setCode(200)
         def monoVo = Mono.just(vo)
+        and:
+        webClientUtil.requestPongService() >> monoVo
         when:
-        Mockito.when(webClientUtil.requestPongService()).thenReturn(monoVo)
         def responseVO = pingService.invokePong(param)
         then:
         responseVO.toString() == monoVo.toString()
@@ -34,11 +35,18 @@ class PingServiceImplTest extends Specification {
 
     def "invoke pong throw exception"() {
         given:
+        def webClientUtil = Mock(WebClientUtil)
+        def pingService = new PingServiceImpl(webClientUtil)
         def param = "hello"
+        webClientUtil.requestPongService() >> RuntimeException.class
         when:
-        Mockito.when(webClientUtil.requestPongService()).thenThrow(Exception.class)
-        def responseVO = pingService.invokePong(param)
+        pingService.invokePong(param)
         then:
-        responseVO == Mono.empty()
+        def throwable = thrown(expectedException)
+        throwable.message == errorMessage
+        where:
+        expectedException | errorMessage
+        RuntimeException  | "REQUEST ERROR"
+
     }
 }
