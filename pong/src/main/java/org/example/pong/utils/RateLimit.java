@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Rate limit
  */
 public class RateLimit {
-    private int limit;
+    private final int limit;
     private final AtomicInteger limitCount;
 
     public RateLimit(int limit) {
@@ -14,13 +14,6 @@ public class RateLimit {
         limitCount = new AtomicInteger(0);
     }
 
-    public int getLimit() {
-        return limit;
-    }
-
-    public void setLimit(int limit) {
-        this.limit = limit;
-    }
 
     /**
      * 添加

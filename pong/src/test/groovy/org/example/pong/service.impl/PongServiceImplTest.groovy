@@ -1,10 +1,9 @@
 package org.example.pong.service.impl
 
-
+import org.example.pong.utils.RateLimit
 import spock.lang.Specification
 
 class PongServiceImplTest extends Specification {
-
 
     def setup() {
 
@@ -14,9 +13,6 @@ class PongServiceImplTest extends Specification {
         given:
         def pongService = new PongServiceImpl()
         def param = "hello"
-        and:
-        pongService.linuxLockFile = "/tmp/process_limit.lock"
-        pongService.windowsLockFile = "d:/process_limit1.lock"
         when:
         def request = pongService.handlerRequest(param)
         then:
@@ -26,30 +22,10 @@ class PongServiceImplTest extends Specification {
         block.data == "world"
     }
 
-    def "test handler request throw exception"() {
-        given:
-        def pongService = new PongServiceImpl()
-        def param = "hello"
-        and:
-        pongService.linuxLockFile = "/tmp/process_limit.lock"
-        pongService.windowsLockFile = "d:/tmp/process_limit1.lock"
-        when:
-        pongService.handlerRequest(param)
-        then:
-        def throwable = thrown(expectedException)
-        throwable.message == errorMessage
-        where:
-        expectedException | errorMessage
-        RuntimeException  | "request error"
-    }
-
     def "test handler request param is empty"() {
         given:
         def pongService = new PongServiceImpl()
         def param = ""
-        and:
-        pongService.linuxLockFile = "/tmp/process_limit.lock"
-        pongService.windowsLockFile = "d:/process_limit.lock"
         when:
         def request = pongService.handlerRequest(param)
         then:
@@ -62,9 +38,6 @@ class PongServiceImplTest extends Specification {
         given:
         def pongService = new PongServiceImpl()
         def param = "haha"
-        and:
-        pongService.linuxLockFile = "/tmp/process_limit.lock"
-        pongService.windowsLockFile = "d:/process_limit.lock"
         when:
         def request = pongService.handlerRequest(param)
         then:
@@ -75,12 +48,11 @@ class PongServiceImplTest extends Specification {
 
     def "test handler request ratelimit tryaccquire false"() {
         given:
+        def rateLimit = Mock(RateLimit)
         def pongService = new PongServiceImpl()
         def param = "hello"
         and:
-        pongService.linuxLockFile = "/tmp/process_limit.lock"
-        pongService.windowsLockFile = "d:/process_limit.lock"
-        pongService.rateLimit.setLimit(-1)
+        rateLimit.tryAcquire() >> false
         when:
         def request = pongService.handlerRequest(param)
         then:
@@ -88,22 +60,5 @@ class PongServiceImplTest extends Specification {
         block.code == 429
         block.msg == "Request sent & Pong throttled it"
     }
-
-    def "test handler request count lg 2"() {
-        given:
-        def pongService = new PongServiceImpl()
-        def param = "hello"
-        and:
-        pongService.linuxLockFile = "/tmp/process_limit.lock"
-        pongService.windowsLockFile = "d:/process_limit.lock"
-        pongService.saveRequestCount.set(5)
-        when:
-        def request = pongService.handlerRequest(param)
-        then:
-        def block = request.block()
-        block.code == 429
-        block.msg == "Request not send as being 'reate limited'"
-    }
-
 }
 

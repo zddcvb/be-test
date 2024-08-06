@@ -1,6 +1,7 @@
 package org.example.ping.service.impl
 
 import org.example.ping.entry.PingResponseVO
+import org.example.ping.utils.PingServiceLimit
 import org.example.ping.utils.WebClientUtil
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -17,8 +18,8 @@ class PingServiceImplTest extends Specification {
 
     def "invoke pong normal"() {
         given:
-        def webClientUtil = Mock(WebClientUtil)
-        def pingService = new PingServiceImpl(webClientUtil)
+        def pingServiceLimit = Mock(PingServiceLimit)
+        def pingService = new PingServiceImpl(pingServiceLimit)
         def param = "hello"
         def vo = new PingResponseVO();
         vo.setData("world")
@@ -26,7 +27,7 @@ class PingServiceImplTest extends Specification {
         vo.setCode(200)
         def monoVo = Mono.just(vo)
         and:
-        webClientUtil.requestPongService() >> monoVo
+        pingServiceLimit.tryAcquire() >> monoVo
         when:
         def responseVO = pingService.invokePong(param)
         then:
@@ -35,10 +36,10 @@ class PingServiceImplTest extends Specification {
 
     def "invoke pong throw exception"() {
         given:
-        def webClientUtil = Mock(WebClientUtil)
-        def pingService = new PingServiceImpl(webClientUtil)
+        def pingServiceLimit = Mock(PingServiceLimit)
+        def pingService = new PingServiceImpl(pingServiceLimit)
         def param = "hello"
-        webClientUtil.requestPongService() >> RuntimeException.class
+        pingServiceLimit.tryAcquire() >> RuntimeException.class
         when:
         pingService.invokePong(param)
         then:

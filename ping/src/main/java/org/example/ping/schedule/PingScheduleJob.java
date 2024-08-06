@@ -1,23 +1,32 @@
 package org.example.ping.schedule;
 
-import org.example.ping.utils.WebClientUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.ping.entry.PingResponseVO;
+import org.example.ping.utils.PingServiceLimit;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
+import reactor.util.Logger;
+import reactor.util.Loggers;
 
 
 @Component
 public class PingScheduleJob {
 
-    @Autowired
-    private WebClientUtil webClientUtil;
+    private PingServiceLimit pingServiceLimit;
+    static Logger LOGGER = Loggers.getLogger(PingScheduleJob.class);
 
-    public PingScheduleJob(WebClientUtil webClientUtil) {
-        this.webClientUtil = webClientUtil;
+    public PingScheduleJob(PingServiceLimit pingServiceLimit) {
+        this.pingServiceLimit = pingServiceLimit;
     }
 
     @Scheduled(cron = "0/1 * * * * ?")
     public void pingPong() {
-        webClientUtil.requestPongService();
+        Mono<PingResponseVO> pingResponseVOMono = pingServiceLimit.tryAcquire();
+        PingResponseVO pingResponseVO = pingResponseVOMono.block();
+        if (pingResponseVO != null) {
+            LOGGER.info(pingResponseVO.getMsg());
+        } else {
+            LOGGER.info("Request not send as being 'rate limited'");
+        }
     }
 }

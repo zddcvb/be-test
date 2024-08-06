@@ -1,4 +1,4 @@
-package org.example.pong.utils;
+package org.example.ping.utils;
 
 public class SystemUtil {
 

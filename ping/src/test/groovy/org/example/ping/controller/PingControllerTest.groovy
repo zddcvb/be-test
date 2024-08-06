@@ -28,7 +28,7 @@ class PingControllerTest extends Specification {
         mockMvc = MockMvcBuilders.standaloneSetup(pingController).build();
     }
 
-    def "invokePong"() {
+    def "request ping url"() {
         given:
         def param = "hello"
         def vo = new PingResponseVO();
