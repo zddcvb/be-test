@@ -43,10 +43,10 @@
                 <version>0.8.11</version>
                 <configuration>
                     <excludes>
-                        <exclude>org/example/ping/config/*.java</exclude>
-                        <exclude>org/example/ping/service/*.jva</exclude>
-                        <exclude>org/example/ping/entry/*.java</exclude>
-                        <exclude>org/example/ping/*.java</exclude>
+                        <exclude>org/example/ping/config/*</exclude>
+                        <exclude>org/example/ping/service/*</exclude>
+                        <exclude>org/example/ping/entry/*</exclude>
+                        <exclude>org/example/ping/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>

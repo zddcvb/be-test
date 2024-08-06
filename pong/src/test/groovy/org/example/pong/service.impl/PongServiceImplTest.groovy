@@ -48,11 +48,9 @@ class PongServiceImplTest extends Specification {
 
     def "test handler request ratelimit tryaccquire false"() {
         given:
-        def rateLimit = Mock(RateLimit)
         def pongService = new PongServiceImpl()
         def param = "hello"
-        and:
-        rateLimit.tryAcquire() >> false
+        pongService.rateLimit = new RateLimit(-1)
         when:
         def request = pongService.handlerRequest(param)
         then:

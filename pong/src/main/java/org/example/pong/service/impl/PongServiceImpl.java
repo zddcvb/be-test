@@ -12,11 +12,11 @@ import reactor.util.Loggers;
 
 @Service
 public class PongServiceImpl implements PongService {
-    private static Logger LOGGER = Loggers.getLogger(PongServiceImpl.class);
+    static Logger LOGGER = Loggers.getLogger(PongServiceImpl.class);
     RateLimit rateLimit = new RateLimit(1);
 
     @Override
-    public  Mono<PongResponseVO> handlerRequest(String param) {
+    public Mono<PongResponseVO> handlerRequest(String param) {
         //每次请求只能处理一个
         if (rateLimit.tryAcquire()) {
             PongResponseVO pongResponseVO = new PongResponseVO();
@@ -41,6 +41,5 @@ public class PongServiceImpl implements PongService {
         pongResponseVO.setMsg("Request sent & Pong throttled it");
         LOGGER.info(pongResponseVO.toString());
         return Mono.just(pongResponseVO);
-
     }
 }

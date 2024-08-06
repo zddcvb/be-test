@@ -50,9 +50,9 @@
                 <version>0.8.11</version>
                 <configuration>
                     <excludes>
-                        <exclude>org/example/pong/service/*.java</exclude>
+                        <exclude>org/example/pong/service/*</exclude>
                         <exclude>org/example/pong/entry/**/*</exclude>
-                        <exclude>org/example/pong/*.java</exclude>
+                        <exclude>org/example/pong/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
