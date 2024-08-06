@@ -1,6 +1,5 @@
 package org.example.pong.utils
 
-
 import spock.lang.Specification
 
 class RateLimitTest extends Specification {

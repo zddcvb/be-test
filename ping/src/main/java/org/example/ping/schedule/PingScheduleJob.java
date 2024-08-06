@@ -8,7 +8,9 @@ import reactor.core.publisher.Mono;
 import reactor.util.Logger;
 import reactor.util.Loggers;
 
-
+/**
+ * @author Dane
+ */
 @Component
 public class PingScheduleJob {
 
@@ -19,6 +21,9 @@ public class PingScheduleJob {
         this.pingServiceLimit = pingServiceLimit;
     }
 
+    /**
+     * 1 second per excute pong service
+     */
     @Scheduled(cron = "0/1 * * * * ?")
     public void pingPong() {
         Mono<PingResponseVO> pingResponseVOMono = pingServiceLimit.tryAcquire();

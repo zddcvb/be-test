@@ -13,6 +13,9 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.util.Objects;
 
+/**
+ * @author Dane
+ */
 @Component
 public class PingServiceLimit {
     @Value("${linux.lock.file}")
@@ -31,8 +34,11 @@ public class PingServiceLimit {
         this.webClientUtil = webClientUtil;
     }
 
+    /**
+     * use two second filelock,if can not get one of them,continue to get another one lock
+     * @return Mono<PingResponseVO>
+     */
     public Mono<PingResponseVO> tryAcquire() {
-
         FileLock fileLock1 = getFileLock(linuxLockFile, windowsLockFile);
         if (Objects.nonNull(fileLock1)) {
             return webClientUtil.requestPongService(fileLock1);

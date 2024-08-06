@@ -1,10 +1,6 @@
 package org.example.ping.utils
 
 import org.example.ping.entry.PingResponseVO
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito
-import org.springframework.test.web.client.MockRestServiceServer
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 import spock.lang.Specification

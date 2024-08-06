@@ -2,10 +2,6 @@ package org.example.ping.service.impl
 
 import org.example.ping.entry.PingResponseVO
 import org.example.ping.utils.PingServiceLimit
-import org.example.ping.utils.WebClientUtil
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito
 import reactor.core.publisher.Mono
 import spock.lang.Specification
 

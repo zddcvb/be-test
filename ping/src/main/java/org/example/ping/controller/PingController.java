@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import reactor.core.publisher.Mono;
 
+/**
+ * @author Dane
+ */
 @Controller
 @RequestMapping("/ping")
 public class PingController {

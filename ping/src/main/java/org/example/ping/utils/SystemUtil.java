@@ -1,5 +1,8 @@
 package org.example.ping.utils;
 
+/**
+ * @author Dane
+ */
 public class SystemUtil {
 
     public static boolean isWindows() {
